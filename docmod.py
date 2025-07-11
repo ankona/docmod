@@ -33,9 +33,14 @@ def extract_docstrings(path: pathlib.Path) -> DocstringData:
         if isinstance(node, ast.FunctionDef):
             data.methods[node.name] = ast.get_docstring(node) or ""
 
-    for k, v in data.methods.items():
-        v = v.replace("\n", "\n\t")
-        data.cls.__doc__ += f"\n\n{k}\n\t{v}"
+    try:
+        __IPYTHON__
+        for k, v in data.methods.items():
+            v = v.replace("\n", "\n\t")
+            data.cls.__doc__ += f"\n\n{k}\n\t{v}"
+
+    except:
+        ...
 
     return data
 
